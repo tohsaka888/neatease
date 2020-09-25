@@ -33,6 +33,7 @@ function App() {
     const [artist3, setArtist3] = useState([]);
     const [mymusic, setMymusic] = useState({});
     const [toplist1, setToplist] = useState([]);
+    const [time,setTime] = useState("")
 
     const playlistDetail = async (id, cookie) => {
         const res = await fetch(`http://121.196.180.250:3000/playlist/detail?id=${id}&cookie=${cookie}`);
@@ -41,6 +42,10 @@ function App() {
     }
 
     useEffect(() => {
+
+        const audio=document.getElementById("audio");
+        console.log(audio.duration)
+
         const send = async () => {
             const res = await fetch("http://121.196.180.250:3000/banner", {mode: "cors"});
             const data = await res.json();
@@ -159,7 +164,7 @@ function App() {
                                 borderRadius: "50px",
                                 zIndex: "100"
                             }}>
-                                <audio
+                                <audio id={'audio'}
                                     src={musicSrc} autoPlay
                                     controls style={{
                                     width: "70vw",

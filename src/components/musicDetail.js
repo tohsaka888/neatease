@@ -3,6 +3,7 @@ import {useParams} from 'react-router-dom'
 import Content from "./content";
 import {Layout,Typography,Button} from "antd";
 import {PlayCircleOutlined} from '@ant-design/icons'
+import Lyric from 'lyric-parser';
 
 const MusicDetail = ({setMusicUrl}) => {
 
@@ -11,6 +12,7 @@ const MusicDetail = ({setMusicUrl}) => {
     const [songs,setSongs] = useState({});
     const [imgUrl,setImgurl] = useState("");
     const [text,setText] = useState([]);
+    const [start,setStart] = useState("");
 
     useEffect(()=>{
         const detail = async () => {
@@ -22,7 +24,13 @@ const MusicDetail = ({setMusicUrl}) => {
         const lyric = async () => {
             const res = await fetch(`http://121.196.180.250:3000/lyric?id=${id}`);
             const data = await res.json();
-            setText(data.lrc.lyric.split('\n'));
+            if(data.lrc){
+                let lyric = new Lyric(data.lrc.lyric);
+                console.log(lyric)
+                setText(lyric.lines);
+            }else{
+                setText(["这首歌目前没有歌词哦"])
+            }
         }
         detail();
         lyric();
@@ -45,7 +53,7 @@ const MusicDetail = ({setMusicUrl}) => {
                     {songs.ar &&
                         <div>
                             {songs.ar.map((item,index)=>{
-                                return <div key={index} style={{float:"left",fontFamily:"text",width:"50vw"}}><span style={{float:"left"}}>歌手:{item.name}</span></div>
+                                return <div key={index} style={{float:"left",fontFamily:"text",width:"50vw"}}><span style={{float:"left",fontSize:"18px"}}>歌手:{item.name}</span></div>
                             })}
                         </div>
                     }
@@ -54,7 +62,7 @@ const MusicDetail = ({setMusicUrl}) => {
                         {text.map((item,index)=>{
                             return (
                                 <Paragraph key={index} style={{float:"left",width:"26.3vw"}}>
-                                    <span style={{float:"left"}}>{item}</span>
+                                    <span style={{float:"left"}}>{item.txt}</span>
                                 </Paragraph>
                             )
                         })}
