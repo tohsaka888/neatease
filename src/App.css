@@ -36,3 +36,23 @@
     transform: rotate(360deg);
   }
 }
+
+.audio {
+  display: block;
+  width: 100%;
+  height: 8px;
+  transition: all 0.5s linear;
+  overflow: hidden;
+}
+
+.audio:hover{
+  height: 70px;
+  transition: all 0.5s linear;
+}
+
+.row {
+  background-color: #f6e8e8;
+  width: 100%;
+  float: left;
+  margin-top: 20px;
+}
