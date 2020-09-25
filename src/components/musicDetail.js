@@ -10,6 +10,7 @@ const MusicDetail = ({setMusicUrl}) => {
     const {id} = useParams();
     const [songs,setSongs] = useState({});
     const [imgUrl,setImgurl] = useState("");
+    const [text,setText] = useState([]);
 
     useEffect(()=>{
         const detail = async () => {
@@ -17,9 +18,14 @@ const MusicDetail = ({setMusicUrl}) => {
             const data = await res.json();
             setSongs(data.songs[0]);
             setImgurl(data.songs[0].al.picUrl)
-            console.log(data.songs[0]);
+        }
+        const lyric = async () => {
+            const res = await fetch(`http://121.196.180.250:3000/lyric?id=${id}`);
+            const data = await res.json();
+            setText(data.lrc.lyric.split('\n'));
         }
         detail();
+        lyric();
     },[id]);
 
     const play1 = async () => {
@@ -28,22 +34,31 @@ const MusicDetail = ({setMusicUrl}) => {
         setMusicUrl(data.data[0].url);
     }
 
-    const {Title,Text,Paragraph} = Typography;
+    const {Title,Paragraph} = Typography;
 
     return (
-        <Content style={{marginLeft:"15vw",marginRight:"15vw",background:"white",height:"1000px"}}>
+        <Content style={{marginLeft:"15vw",marginRight:"15vw",background:"white"}}>
             <div style={{float:"left",display:"flex",marginTop:"20px",marginLeft:"30px"}}>
                 <img src={imgUrl} style={{width:"170px",height:"170px",borderRadius:"50%",border:"5px solid",padding:"5px"}} alt={id}/>
-                <Typography style={{marginLeft:"30px",float:"left"}}>
-                    <Title level={1} style={{fontFamily: "title", float: "left"}}>{songs.name}</Title>
-                    {songs.ar && <div>
-                        <Paragraph style={{float:"left",fontFamily:"text"}}>歌手:
+                <Typography style={{marginLeft:"50px"}}>
+                    <Title level={1} style={{fontFamily: "title", float: "left",textAlign:"left"}}>{songs.name}</Title>
+                    {songs.ar &&
+                        <div>
                             {songs.ar.map((item,index)=>{
-                                return <span key={index}>{item.name}</span>
+                                return <div key={index} style={{float:"left",fontFamily:"text",width:"50vw"}}><span style={{float:"left"}}>歌手:{item.name}</span></div>
                             })}
-                        </Paragraph>
-                    </div>}
-                    <Button type={"primary"} shape={"round"} style={{marginTop:"30px",float:"left"}} onClick={()=>{play1()}}><PlayCircleOutlined />播放</Button>
+                        </div>
+                    }
+                    <Button type={"primary"} shape={"round"} style={{float:"left",marginTop:"30px"}} onClick={()=>{play1()}}><PlayCircleOutlined />播放</Button>
+                    <Paragraph style={{float:"left",marginTop:"30px"}} ellipsis={{expandable:true,rows:30}}>
+                        {text.map((item,index)=>{
+                            return (
+                                <Paragraph key={index} style={{float:"left",width:"26.3vw"}}>
+                                    <span style={{float:"left"}}>{item}</span>
+                                </Paragraph>
+                            )
+                        })}
+                    </Paragraph>
                 </Typography>
             </div>
         </Content>
