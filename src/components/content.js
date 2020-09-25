@@ -41,35 +41,6 @@ const Content = ({setSongUrl, toplistSongs2, toplistSongs1, toplistSongs, toplis
     }
 
     return (
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         <div>
             <div style={{display: "inline-flex", height: "40vh", overflow: "hidden"}} className="lunbo">
                 <div className="div" style={{width: "15vw", height: "40vh"}}>
@@ -279,7 +250,6 @@ const Content = ({setSongUrl, toplistSongs2, toplistSongs1, toplistSongs, toplis
                     <TabPane tab="4" key={4}>
                         <div style={{display: "flex"}}>
                             {weekData.slice(15, 20).map((item, index) => {
-
                                 return (
                                     <div style={{marginLeft: "30px"}} key={index}>
                                         <img className="playlist" src={item.picUrl} style={{

@@ -147,7 +147,7 @@ function App() {
                                           comment={comment} setComment={setComment} margin="15vw"/>
                             </Route>
                             <Route path={'/musicdetail/:id'}>
-                                <MusicDetail />
+                                <MusicDetail setMusicUrl={setMusicSrc}/>
                             </Route>
                         </Switch>
                         <div style={{height: "20px"}}/>

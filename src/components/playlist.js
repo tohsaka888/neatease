@@ -2,9 +2,8 @@ import React, {useContext, useEffect, useState} from 'react';
 import {Avatar, Button, Col, Empty, Row, Typography, Tag, Comment, Menu, Spin, Input} from "antd";
 import {PlayCircleOutlined, EnvironmentOutlined, DislikeOutlined, LikeOutlined} from '@ant-design/icons'
 import {useTrail, animated} from "react-spring";
-import {useParams, Link, Switch, Route} from 'react-router-dom'
+import {useParams, Link} from 'react-router-dom'
 import {playContext} from "./Context";
-// import MusicDetail from "./musicDetail";
 
 const PlayList = ({setMusicUrl, comment, margin, myId = null, myCookie = null}) => {
 
