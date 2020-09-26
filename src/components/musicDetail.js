@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {useParams} from 'react-router-dom'
 import Content from "./content";
 import {Layout,Typography,Button} from "antd";
@@ -7,7 +7,7 @@ import Lyric from 'lyric-parser';
 
 const MusicDetail = ({setMusicUrl}) => {
 
-    const audio = document.getElementById('audio');
+    const color = useRef(null)
     const {Content} = Layout;
     const {id} = useParams();
     const [songs,setSongs] = useState({});
@@ -41,6 +41,10 @@ const MusicDetail = ({setMusicUrl}) => {
         const res = await fetch(`http://121.196.180.250:3000/song/url?id=${id}`);
         const data = await res.json();
         setMusicUrl(data.data[0].url);
+        const audio = document.getElementById('audio');
+        audio.addEventListener("timeupdate",function (){
+            color.current.style.color = "red"
+        })
     }
 
     const {Title,Paragraph} = Typography;
@@ -63,17 +67,9 @@ const MusicDetail = ({setMusicUrl}) => {
                         {text.map((item,index)=>{
                             return (
                                 <Paragraph key={index} style={{float:"left",width:"26.3vw"}}>
-                                    <span style={{float:"left"}} id={item.txt}>{item.txt}</span>
+                                    <span style={{float:"left"}} id={item.txt} ref={color}>{item.txt}</span>
                                 </Paragraph>
                             )
-                        })}
-                        {text.map((item,index)=>{
-                            audio.addEventListener("timeupdate",()=>{
-                                const txt = document.getElementById(item.txt);
-                                if(audio.currentTime*1000 >= item.time && audio.currentTime < audio.duration){
-                                    txt.style.color = "red";
-                                }
-                            })
                         })}
                     </Paragraph>
                 </Typography>
