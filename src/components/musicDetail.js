@@ -7,14 +7,15 @@ import Lyric from 'lyric-parser';
 
 const MusicDetail = ({setMusicUrl}) => {
 
+    const audio = document.getElementById('audio');
     const {Content} = Layout;
     const {id} = useParams();
     const [songs,setSongs] = useState({});
     const [imgUrl,setImgurl] = useState("");
     const [text,setText] = useState([]);
-    const [start,setStart] = useState("");
 
     useEffect(()=>{
+
         const detail = async () => {
             const res = await fetch(`http://121.196.180.250:3000/song/detail?ids=${id}`);
             const data = await res.json();
@@ -62,9 +63,17 @@ const MusicDetail = ({setMusicUrl}) => {
                         {text.map((item,index)=>{
                             return (
                                 <Paragraph key={index} style={{float:"left",width:"26.3vw"}}>
-                                    <span style={{float:"left"}}>{item.txt}</span>
+                                    <span style={{float:"left"}} id={item.txt}>{item.txt}</span>
                                 </Paragraph>
                             )
+                        })}
+                        {text.map((item,index)=>{
+                            audio.addEventListener("timeupdate",()=>{
+                                const txt = document.getElementById(item.txt);
+                                if(audio.currentTime*1000 >= item.time && audio.currentTime < audio.duration){
+                                    txt.style.color = "red";
+                                }
+                            })
                         })}
                     </Paragraph>
                 </Typography>

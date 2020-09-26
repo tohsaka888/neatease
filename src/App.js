@@ -43,9 +43,6 @@ function App() {
 
     useEffect(() => {
 
-        const audio=document.getElementById("audio");
-        console.log(audio.duration)
-
         const send = async () => {
             const res = await fetch("http://121.196.180.250:3000/banner", {mode: "cors"});
             const data = await res.json();
