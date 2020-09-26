@@ -13,6 +13,7 @@ const MusicDetail = ({setMusicUrl}) => {
     const [songs,setSongs] = useState({});
     const [imgUrl,setImgurl] = useState("");
     const [text,setText] = useState([]);
+    const [change,setChange] = useState(0)
 
     useEffect(()=>{
 
@@ -41,10 +42,6 @@ const MusicDetail = ({setMusicUrl}) => {
         const res = await fetch(`http://121.196.180.250:3000/song/url?id=${id}`);
         const data = await res.json();
         setMusicUrl(data.data[0].url);
-        const audio = document.getElementById('audio');
-        audio.addEventListener("timeupdate",function (){
-            color.current.style.color = "red"
-        })
     }
 
     const {Title,Paragraph} = Typography;
@@ -65,9 +62,16 @@ const MusicDetail = ({setMusicUrl}) => {
                     <Button type={"primary"} shape={"round"} style={{float:"left",marginTop:"30px"}} onClick={()=>{play1()}}><PlayCircleOutlined />播放</Button>
                     <Paragraph style={{float:"left",marginTop:"30px"}} ellipsis={{expandable:true,rows:30}}>
                         {text.map((item,index)=>{
+                            const audio = document.getElementById('audio');
+                            audio.addEventListener("timeupdate",function (){
+                                if(audio.currentTime*1000 > item.time){
+                                    console.log(index)
+                                    // setChange(index)
+                                }
+                            })
                             return (
                                 <Paragraph key={index} style={{float:"left",width:"26.3vw"}}>
-                                    <span style={{float:"left"}} id={item.txt} ref={color}>{item.txt}</span>
+                                    <span style={{float:"left",color:index === change?"red":"black"}} id={item.txt} ref={color}>{item.txt}</span>
                                 </Paragraph>
                             )
                         })}
